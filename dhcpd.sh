@@ -2,22 +2,24 @@
 
 mkdir -p /data
 
+if [ ! -f /conf/dhcpd.conf ]; then
+    echo "[Info] using default dhcpd.conf"
+    cp /default_dhcpd.conf /data/dhcpd.conf
+else
+    echo "[Info] found dhcpd.conf in /data/ folder"
+    cp /conf/dhcpd.conf /data/dhcpd.conf
+fi
 
 if [  "$(ls -A /conf/)" ]; then
     for dr in /conf/*
     do
-        echo ">>>>> $dr"
-#        echo "include $PWD/$dr;" >> /data/dhcpd.conf
+        if [ "$dr" = "/conf/dhcpd.conf" ]; then
+            echo "skip reading dhcpd.conf"
+        else
+            echo ">>>>> $dr"
+            echo "include \"${dr}\";" >> /data/dhcpd.conf
+        fi;
     done
-fi
-
-if [ ! -f /data/dhcpd.conf ]; then
-    IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
-    PAIR=$(netmask -s $IP | awk '{print $1}')
-    NETWORK=$(echo $PAIR | cut -d/ -f1)
-    NETMASK=$(echo $PAIR | cut -d/ -f2)
-    cp /default_dhcpd.conf /data/dhcpd.conf
-    echo "subnet $NETWORK netmask $NETMASK { }" >> /data/dhcpd.conf
 fi
 
 if [ ! -f /data/dhcpd.leases ]; then
