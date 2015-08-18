@@ -35,7 +35,15 @@ subnet 192.168.8.0 netmask 255.255.255.0 {
 * RUN Service
 
 ```
-docker kill  dhcpd; docker rm dhcpd; docker run --net=host  -d --name dhcpd -v /opt/dhcpd:/conf   goyoo/yoo-isc-dhcpd
+docker run --net=host  -d --name dhcpd -v /opt/dhcpd:/conf   goyoo/yoo-isc-dhcpd
+```
+
+* ` Error response from daemon: Conflict`, try to rm old image and run again
+
+```
+docker kill  dhcpd;
+docker rm dhcpd;
+
 ```
 
 
