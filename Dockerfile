@@ -1,5 +1,5 @@
 FROM debian:8.1
-MAINTAINER Tad Wang <wptady@gmail.com>
+MAINTAINER Tad Wang <wptad@tom.com>
 
 RUN \
 	DEBIAN_FRONTEND=noninteractive && \
@@ -13,14 +13,7 @@ ADD dhcpd.sh /dhcpd
 ADD dhcpd.conf /default_dhcpd.conf
 RUN chmod +x /dhcpd
 
-EXPOSE 67
 EXPOSE 67/udp
-EXPOSE 547
-EXPOSE 547/udp
-EXPOSE 647
-EXPOSE 647/udp
-EXPOSE 847
-EXPOSE 847/udp
 
 VOLUME	["/conf"]
 
